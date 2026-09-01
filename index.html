@@ -28,6 +28,7 @@
             font-size: 26px;
             margin-bottom: 5px;
             font-weight: 700;
+            text-align: center;
         }
 
         .subtitle {
@@ -35,6 +36,7 @@
             font-size: 14px;
             margin-bottom: 30px;
             text-align: center;
+            word-break: keep-all;
         }
 
         /* 메인 워크스페이스 컨테이너 */
@@ -43,10 +45,15 @@
             flex-direction: row;
             align-items: flex-start;
             justify-content: center;
-            gap: 40px;
+            gap: 20px;
             width: 100%;
-            max-width: 1050px; 
+            max-width: 1100px; 
             box-sizing: border-box;
+            transition: max-width 0.3s ease;
+        }
+
+        .workspace-container.comments-popped {
+            max-width: 1520px;
         }
 
         /* Control Panel Styles */
@@ -57,9 +64,53 @@
             box-shadow: 0 10px 30px rgba(116, 125, 140, 0.08);
             margin-bottom: 35px;
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             box-sizing: border-box;
             flex-shrink: 0; 
+            transition: max-width 0.3s ease;
+        }
+
+        .workspace-container.comments-popped .control-panel {
+            max-width: 380px;
+        }
+
+        /* 댓글 사이드 패널 */
+        .comments-side-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(116, 125, 140, 0.08);
+            width: 100%;
+            max-width: 440px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+            display: none;
+            flex-direction: column;
+            max-height: 720px; 
+            overflow-y: auto;
+            border: none;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .workspace-container.comments-popped .comments-side-panel {
+            display: flex;
+            max-width: 440px;
+        }
+
+        /* 스크롤바 색상을 회색톤으로 변경 */
+        .comments-side-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .comments-side-panel::-webkit-scrollbar-track {
+            background: #f1f2f6;
+            border-radius: 4px;
+        }
+        .comments-side-panel::-webkit-scrollbar-thumb {
+            background: #c8d6e5;
+            border-radius: 4px;
+        }
+        .comments-side-panel::-webkit-scrollbar-thumb:hover {
+            background: #a4b0be;
         }
 
         .control-group {
@@ -72,28 +123,62 @@
             margin-bottom: 8px;
             font-size: 14px;
             color: #353b48;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
-        .control-group input[type="text"], .control-group input[type="file"] {
+        .control-group input[type="text"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #dfe4ea;
             border-radius: 8px;
             box-sizing: border-box;
-            font-family: inherit;
+            font-family: 'Noto Sans KR', sans-serif;
             font-size: 14px;
             transition: all 0.2s;
             background-color: #fdfefe;
         }
 
-        /* 세로로만 늘어나는 Textarea */
+        /* 파일 선택 인풋 박스 스타일 통일 */
+        .control-group input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dfe4ea;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
+            background-color: #fdfefe;
+            color: #57606f;
+        }
+
+        .control-group input[type="file"]::file-selector-button {
+            background: #fff0f3;
+            border: 1px solid #ffccd5;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ff6b81;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .control-group input[type="file"]::file-selector-button:hover {
+            background-color: #ff8897;
+            color: white;
+            border-color: #ff8897;
+        }
+
         .control-group textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #dfe4ea;
             border-radius: 8px;
             box-sizing: border-box;
-            font-family: inherit;
+            font-family: 'Noto Sans KR', sans-serif;
             font-size: 14px;
             transition: all 0.2s;
             resize: vertical;
@@ -118,16 +203,77 @@
             margin-top: 8px;
             margin-bottom: 0 !important;
             cursor: pointer;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         .checkbox-label input[type="checkbox"] {
             width: 16px;
             height: 16px;
             cursor: pointer;
-            accent-color: #ff8897;
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #fdfefe;
+            border: 1px solid #dfe4ea;
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            transition: all 0.2s;
         }
 
-        /* Profile Upload Zone */
+        .checkbox-label input[type="checkbox"]:checked {
+            background-color: #ff8897;
+            border-color: #ff8897;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .section-header-row label {
+            font-family: 'Noto Sans KR', sans-serif !important;
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            color: #353b48 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .btn-pop-toggle {
+            background: #fff0f3;
+            border: 1px solid #ffccd5;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ff6b81;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .btn-pop-toggle:hover {
+            background-color: #ff8897;
+            color: white;
+            border-color: #ff8897;
+        }
+
         .profile-upload-zone {
             display: flex;
             align-items: center;
@@ -153,13 +299,13 @@
             align-items: center;
         }
 
-        /* 동적 댓글/답글 입력창 스타일 */
         .comment-input-card {
-            background-color: #f8f9fa;
-            border: 1px solid #edf2f7;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 12px;
+            background-color: #ffffff;
+            border: 1px solid #e4e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
             position: relative;
         }
 
@@ -167,84 +313,82 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #f1f2f6;
         }
 
         .comment-input-header span {
-            font-weight: bold;
+            font-weight: 700;
             font-size: 13px;
-            color: #4b6584;
+            color: #ff6b81;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         .reply-input-card {
-            background-color: #ffffff;
-            border: 1px dashed #dfe4ea;
-            border-radius: 8px;
+            background-color: #fafbfc;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
             padding: 12px;
             margin-top: 10px;
-            margin-left: 6px; 
             box-sizing: border-box;
         }
 
-        /* 🌸 버튼 감성 리디자인 */
         .btn-small-danger {
-            background-color: #ffa8b6;
+            background-color: #ff8897;
             color: white;
             border: none;
             border-radius: 6px;
             padding: 4px 10px;
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
         }
         .btn-small-danger:hover {
-            background-color: #ff7685;
-        }
-        .btn-small-danger:hover {
-            background-color: #747d8c;
-        }
-        .btn-small-danger:hover {
-            background-color: #d63031;
+            background-color: #ff526d;
         }
 
         .btn-small-add {
-            background-color: #f1f2f6;
-            color: #57606f;
-            border: 1px solid #dfe4ea;
+            background-color: #fff0f3;
+            color: #ff6b81;
+            border: 1px solid #ffccd5;
             border-radius: 6px;
             padding: 6px 12px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 8px;
+            margin-top: 10px;
+            display: inline-block;
             transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
         }
         .btn-small-add:hover {
-            background-color: #dfe4ea;
-            color: #2f3640;
+            background-color: #ff8897;
+            color: white;
+            border-color: #ff8897;
         }
 
         .btn-add-comment {
-            background-color: #f1f2f6;
-            color: #57606f;
-            border: 1px dashed #ced6e0;
-            border-radius: 8px;
-            padding: 10px 12px;
+            background-color: #ffffff;
+            color: #ff6b81;
+            border: 2px dashed #ffccd5;
+            border-radius: 10px;
+            padding: 12px;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
-            margin-bottom: 15px;
+            margin-top: 5px;
             transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
         }
         .btn-add-comment:hover {
-            background-color: #ffeaa7;
-            border-color: #fdcb6e;
-            color: #d35400;
+            background-color: #fff0f3;
+            border-color: #ff8897;
         }
 
-        /* Crop Modal Styles */
         .crop-modal {
             display: none;
             position: fixed;
@@ -272,6 +416,7 @@
             margin-top: 0;
             color: #2f3640;
             font-size: 18px;
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         .crop-container {
@@ -301,6 +446,7 @@
             cursor: pointer;
             color: white;
             transition: opacity 0.2s, transform 0.1s;
+            font-family: 'Noto Sans KR', sans-serif;
         }
         .crop-buttons button:active {
             transform: scale(0.98);
@@ -320,7 +466,6 @@
             background-color: #ff7f50 !important;
         }
 
-        /* 모달 안의 완료 버튼 (기본 버튼 오버라이드) */
         .crop-buttons button:not(.btn-sub):not(.btn-reset) {
             background-color: #ff8897 !important;
         }
@@ -341,27 +486,12 @@
             flex-shrink: 0;
             cursor: pointer;
             transition: background 0.2s, transform 0.1s;
+            font-family: 'Noto Sans KR', sans-serif;
         }
         .btn-danger:hover {
             background-color: #ff7685 !important;
         }
-        .btn-danger:active {
-            transform: scale(0.98);
-        }
-        .btn-danger:hover {
-            background-color: #747d8c !important;
-        }
-        .btn-danger:active {
-            transform: scale(0.98);
-        }
-        .btn-danger:hover {
-            background-color: #d63031 !important;
-        }
-        .btn-danger:active {
-            transform: scale(0.98);
-        }
 
-        /* 이미지 저장하기 버튼 스타일 (차분하고 세련된 뮤트 그레이/블루 톤) */
         button.btn-main-save {
             width: 100%;
             padding: 14px;
@@ -374,6 +504,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 4px 15px rgba(255, 136, 151, 0.35);
+            font-family: 'Noto Sans KR', sans-serif;
         }
 
         button.btn-main-save:hover {
@@ -394,6 +525,8 @@
             max-width: 500px;
             box-sizing: border-box;
             flex-grow: 1; 
+            position: sticky;
+            top: 30px;
         }
 
         .preview-title {
@@ -407,7 +540,6 @@
             text-align: left; 
         }
 
-        /* Preview Container Frame */
         .preview-container {
             background: #ffffff;
             padding: 0;
@@ -422,7 +554,6 @@
             margin-bottom: 25px;
         }
 
-        /* Capture Base Element */
         #capture-area {
             width: 1000px; 
             height: auto; 
@@ -433,7 +564,6 @@
             margin-bottom: 0; 
         }
 
-        /* Main Post Layout */
         .main-post {
             display: flex;
             gap: 34px;
@@ -477,7 +607,6 @@
             text-align: left;
         }
 
-        /* Attached Image Frame */
         .post-attached-image-container {
             display: none; 
             margin-left: 156px; 
@@ -493,7 +622,6 @@
             display: block;
         }
 
-        /* Interaction Icons */
         .interaction-icons {
             display: flex;
             justify-content: flex-end;
@@ -535,7 +663,6 @@
             height: 64px; 
         }
 
-        /* Comment Box Layout */
         .comment-box {
             background-color: #F0F0F0;
             border-radius: 12px;
@@ -624,13 +751,23 @@
             letter-spacing: -0.5px;
         }
 
-        @media (max-width: 930px) {
-            .workspace-container {
+        /* 반응형 모바일 최적화 미디어 쿼리 */
+        @media (max-width: 1100px) {
+            body {
+                padding: 15px 10px;
+            }
+            .workspace-container,
+            .workspace-container.comments-popped {
                 flex-direction: column;
                 align-items: center;
+                max-width: 500px !important;
             }
-            .control-panel, .preview-side-zone {
-                max-width: 500px;
+            .control-panel, 
+            .comments-side-panel, 
+            .preview-side-zone {
+                max-width: 100% !important;
+                width: 100% !important;
+                position: static !important;
             }
             .preview-title {
                 text-align: center;
@@ -644,8 +781,9 @@
     <h1>빛밤 피드 메이커</h1>
     <div class="subtitle">문제될 시 삭제. 출처 표기 안해도 됨. 2차공유는 비계나 1대1로만. 외에는 알잘딱 자유롭게 써주시길...</div>
 
-    <div class="workspace-container">
+    <div class="workspace-container" id="workspace-container">
         
+        <!-- 좌측 설정 패널 -->
         <div class="control-panel">
             <div class="control-group">
                 <label>1. 프로필 사진 업로드 (크롭 가능)</label>
@@ -670,23 +808,44 @@
                 </div>
             </div>
 
+            <!-- 5. 좋아요한 사람 (순서 변경 및 번호 교체) -->
             <div class="control-group">
-                <label>5. 댓글 및 답글 관리</label>
-                <div id="comments-input-list"></div>
-                <button type="button" class="btn-add-comment" onclick="addCommentInput()">+ 댓글 추가</button>
-            </div>
-
-            <div class="control-group">
-                <label>6. 좋아요한 사람</label>
+                <label>5. 좋아요한 사람</label>
                 <input type="text" id="input-heart-user" placeholder="비울 수 있음" oninput="handleHeartUserInput()">
                 <label class="checkbox-label">
                     <input type="checkbox" id="input-heart-fill-toggle" onchange="updateText()">
-                    좋아요 누르기 (미리보기에서 눌러도 눌립니다)
+                    좋아요 누르기
                 </label>
             </div>
+
+            <!-- 6. 댓글 및 답글 관리 (인라인 위치) -->
+            <div class="control-group" id="inline-comments-group">
+                <div class="section-header-row">
+                    <label>6. 댓글 및 답글 관리</label>
+                    <button type="button" class="btn-pop-toggle" id="btn-pop-inline" onclick="toggleCommentsPanel()">
+                        <span>옆으로 빼기</span> <span id="toggle-arrow">▶</span>
+                    </button>
+                </div>
+                <div id="comments-input-list-inline"></div>
+                <button type="button" class="btn-add-comment" onclick="addCommentInput()">+ 댓글 추가</button>
+            </div>
+
             <button class="btn-main-save" onclick="downloadImage()">이미지 저장하기</button>
         </div>
 
+        <!-- 6. 댓글 및 답글 관리 (사이드 패널) -->
+        <div class="comments-side-panel" id="comments-side-panel">
+            <div class="section-header-row">
+                <label>6. 댓글 및 답글 관리</label>
+                <button type="button" class="btn-pop-toggle" onclick="toggleCommentsPanel()">
+                    <span id="toggle-arrow-side">◀</span> <span>원위치로</span>
+                </button>
+            </div>
+            <div id="comments-input-list-side" style="flex-grow: 1; margin-top: 10px;"></div>
+            <button type="button" class="btn-add-comment" onclick="addCommentInput()" style="margin-top: 10px;">+ 댓글 추가</button>
+        </div>
+
+        <!-- 우측 미리보기 -->
         <div class="preview-side-zone">
             <div class="preview-title">미리보기</div>
             <div class="preview-container" id="container-frame">
@@ -730,6 +889,7 @@
 
     </div>
 
+    <!-- Crop Modals -->
     <div class="crop-modal" id="profileCropModal">
         <div class="crop-content">
             <h3>프로필 이미지 자르기 (1:1 고정)</h3>
@@ -763,6 +923,7 @@
         const containerFrame = document.getElementById('container-frame');
         let profileCropper = null;
         let postCropper = null;
+        let isCommentsPopped = false;
 
         let commentsData = [
             {
@@ -774,6 +935,22 @@
                 ]
             }
         ];
+
+        function toggleCommentsPanel() {
+            isCommentsPopped = !isCommentsPopped;
+            const workspace = document.getElementById('workspace-container');
+            const inlineGroup = document.getElementById('inline-comments-group');
+            
+            if (isCommentsPopped) {
+                workspace.classList.add('comments-popped');
+                inlineGroup.style.display = 'none';
+            } else {
+                workspace.classList.remove('comments-popped');
+                inlineGroup.style.display = 'block';
+            }
+            renderCommentInputs();
+            setTimeout(updateResponsiveScale, 50);
+        }
 
         function updateResponsiveScale() {
             const currentContainerWidth = containerFrame.clientWidth;
@@ -891,7 +1068,9 @@
         }
 
         function renderCommentInputs() {
-            const container = document.getElementById('comments-input-list');
+            const targetContainerId = isCommentsPopped ? 'comments-input-list-side' : 'comments-input-list-inline';
+            const container = document.getElementById(targetContainerId);
+            if (!container) return;
             container.innerHTML = '';
 
             commentsData.forEach((comment, cIndex) => {
@@ -901,10 +1080,14 @@
                 let html = `
                     <div class="comment-input-header">
                         <span>댓글 ${cIndex + 1}</span>
-                        ${commentsData.length > 1 ? `<button type="button" class="btn-small-danger" onclick="removeCommentInput(${comment.id})">x 댓글 삭제</button>` : ''}
+                        ${commentsData.length > 1 ? `<button type="button" class="btn-small-danger" onclick="removeCommentInput(${comment.id})">삭제</button>` : ''}
                     </div>
-                    <input type="text" placeholder="댓글 작성자 이름" value="${escapeHtml(comment.user)}" oninput="updateCommentData(${comment.id}, 'user', this.value)" style="margin-bottom:5px;">
-                    <textarea rows="2" placeholder="댓글 내용을 입력하세요" oninput="updateCommentData(${comment.id}, 'text', this.value)">${escapeHtml(comment.text)}</textarea>
+                    <div class="control-group" style="margin-bottom: 10px;">
+                        <input type="text" placeholder="댓글 작성자 이름" value="${escapeHtml(comment.user)}" oninput="updateCommentData(${comment.id}, 'user', this.value)">
+                    </div>
+                    <div class="control-group" style="margin-bottom: 10px;">
+                        <textarea rows="2" placeholder="댓글 내용을 입력하세요" oninput="updateCommentData(${comment.id}, 'text', this.value)">${escapeHtml(comment.text)}</textarea>
+                    </div>
                     
                     <div class="replies-container">
                 `;
@@ -913,12 +1096,18 @@
                     html += `
                         <div class="reply-input-card">
                             <div class="comment-input-header">
-                                <span>↳ 답글 ${rIndex + 1}</span>
-                                <button type="button" class="btn-small-danger" onclick="removeReplyInput(${comment.id}, ${reply.id})">x 삭제</button>
+                                <span style="color: #a4b0be; font-size: 12px;">↳ 답글 ${rIndex + 1}</span>
+                                <button type="button" class="btn-small-danger" onclick="removeReplyInput(${comment.id}, ${reply.id})">삭제</button>
                             </div>
-                            <input type="text" placeholder="답글 작성자 이름 (비워두면 게시글 작성자로 입력됩니다.)" value="${escapeHtml(reply.user)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'user', this.value)" style="margin-bottom:5px;">
-                            <input type="text" placeholder="답글 받는 사람 (비워두면 댓글 작성자로 입력됩니다.)" value="${escapeHtml(reply.targetUser)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'targetUser', this.value)" style="margin-bottom:5px;">
-                            <textarea rows="2" placeholder="답글 내용을 입력하세요" oninput="updateReplyData(${comment.id}, ${reply.id}, 'text', this.value)">${escapeHtml(reply.text)}</textarea>
+                            <div class="control-group" style="margin-bottom: 8px;">
+                                <input type="text" placeholder="작성자 이름 (비워두면 기본)" value="${escapeHtml(reply.user)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'user', this.value)">
+                            </div>
+                            <div class="control-group" style="margin-bottom: 8px;">
+                                <input type="text" placeholder="받는 사람 (비워두면 기본)" value="${escapeHtml(reply.targetUser)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'targetUser', this.value)">
+                            </div>
+                            <div class="control-group" style="margin-bottom: 0;">
+                                <textarea rows="2" placeholder="답글 내용을 입력하세요" oninput="updateReplyData(${comment.id}, ${reply.id}, 'text', this.value)">${escapeHtml(reply.text)}</textarea>
+                            </div>
                         </div>
                     `;
                 });
