@@ -195,7 +195,7 @@
         }
 
         .btn-small-add {
-            background-color: #48dbfb;
+            background-color: #9b9c9e;
             color: #2f3640;
             border: none;
             border-radius: 6px;
@@ -207,7 +207,7 @@
         }
 
         .btn-add-comment {
-            background-color: #54a0ff;
+            background-color: #7d7e80;
             color: white;
             border: none;
             border-radius: 6px;
@@ -277,7 +277,7 @@
         .btn-danger {
             width: auto !important;
             padding: 10px 15px !important;
-            background-color: #e74c3c !important;
+            background-color: #7d7e80 !important;
             color: #ffffff !important; 
             border: none !important;
             border-radius: 6px !important;
@@ -291,8 +291,8 @@
         button.btn-main-save {
             width: 100%;
             padding: 14px;
-            background-color: #FFBEBE; 
-            color: #2f3640; 
+            background-color: #49494a; 
+            color: #ffffff; 
             border: none;
             border-radius: 6px;
             font-weight: bold;
@@ -570,22 +570,22 @@
         <!-- LEFT SIDE: 컨트롤 패널 -->
         <div class="control-panel">
             <div class="control-group">
-                <label>0. 프로필 사진 업로드 (크롭 가능)</label>
+                <label>1. 프로필 사진 업로드 (크롭 가능)</label>
                 <div class="profile-upload-zone">
                     <div class="mini-preview" id="mini-profile-preview"></div>
                     <input type="file" id="input-profile-img" accept="image/*" onchange="initProfileCropper(event)">
                 </div>
             </div>
             <div class="control-group">
-                <label>1. 피드 작성자 이름</label>
+                <label>2. 피드 작성자 이름</label>
                 <input type="text" id="input-name" value="" placeholder="이름을 입력하세요" oninput="updateText()">
             </div>
             <div class="control-group">
-                <label>2. 피드 내용</label>
+                <label>3. 피드 내용</label>
                 <textarea id="input-text" rows="2" placeholder="피드 본문 내용을 입력하세요" oninput="updateText()"></textarea>
             </div>
             <div class="control-group">
-                <label>2.5 피드 이미지 첨부 (크롭 가능/자유 비율)</label>
+                <label>4. 피드 이미지 첨부 (크롭 가능/자유 비율)</label>
                 <div class="post-image-upload-zone">
                     <input type="file" id="input-post-attached-image" accept="image/*" onchange="initPostCropper(event)">
                     <button class="btn-danger" onclick="removePostImage()">이미지 삭제</button>
@@ -594,18 +594,18 @@
 
             <!-- 동적 댓글 컨테이너 -->
             <div class="control-group">
-                <label>3. 댓글 및 답글 관리</label>
+                <label>5. 댓글 및 답글 관리</label>
                 <div id="comments-input-list"></div>
                 <button type="button" class="btn-add-comment" onclick="addCommentInput()">+ 댓글 추가</button>
             </div>
 
             <!-- 하트 채우기 수동 스위치 옵션 -->
             <div class="control-group">
-                <label>4. 좋아요한 사람</label>
+                <label>6. 좋아요한 사람</label>
                 <input type="text" id="input-heart-user" placeholder="비울 수 있음" oninput="handleHeartUserInput()">
                 <label class="checkbox-label">
                     <input type="checkbox" id="input-heart-fill-toggle" onchange="updateText()">
-                    메인 하트 아이콘 핑크색 채우기
+                    좋아요 누르기
                 </label>
             </div>
             <button class="btn-main-save" onclick="downloadImage()">이미지 저장하기</button>
@@ -848,8 +848,8 @@
                                 <span>↳ 답글 ${rIndex + 1}</span>
                                 <button type="button" class="btn-small-danger" onclick="removeReplyInput(${comment.id}, ${reply.id})">x 삭제</button>
                             </div>
-                            <input type="text" placeholder="답글 작성자 이름 (기본값: 메인 이름)" value="${escapeHtml(reply.user)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'user', this.value)" style="margin-bottom:5px;">
-                            <input type="text" placeholder="답글 받는 사람 (기본값: 댓글 작성자)" value="${escapeHtml(reply.targetUser)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'targetUser', this.value)" style="margin-bottom:5px;">
+                            <input type="text" placeholder="답글 작성자 이름 (비워두면 게시글 작성자로 입력됩니다.)" value="${escapeHtml(reply.user)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'user', this.value)" style="margin-bottom:5px;">
+                            <input type="text" placeholder="답글 받는 사람 (비워두면 댓글 작성자로 입력됩니다.)" value="${escapeHtml(reply.targetUser)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'targetUser', this.value)" style="margin-bottom:5px;">
                             <textarea rows="2" placeholder="답글 내용을 입력하세요" oninput="updateReplyData(${comment.id}, ${reply.id}, 'text', this.value)">${escapeHtml(reply.text)}</textarea>
                         </div>
                     `;
