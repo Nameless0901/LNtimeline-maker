@@ -6,7 +6,6 @@
     <title>빛밤 피드 메이커</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
@@ -14,7 +13,7 @@
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f5f6fa;
+            background-color: #f8f9fc;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -54,8 +53,8 @@
         .control-panel {
             background: white;
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(116, 125, 140, 0.08);
             margin-bottom: 35px;
             width: 100%;
             max-width: 440px;
@@ -78,30 +77,33 @@
         .control-group input[type="text"], .control-group input[type="file"] {
             width: 100%;
             padding: 10px;
-            border: 1px solid #c8d6e5;
-            border-radius: 6px;
+            border: 1px solid #dfe4ea;
+            border-radius: 8px;
             box-sizing: border-box;
             font-family: inherit;
             font-size: 14px;
-            transition: border 0.2s;
+            transition: all 0.2s;
+            background-color: #fdfefe;
         }
 
         /* 세로로만 늘어나는 Textarea */
         .control-group textarea {
             width: 100%;
             padding: 10px;
-            border: 1px solid #c8d6e5;
-            border-radius: 6px;
+            border: 1px solid #dfe4ea;
+            border-radius: 8px;
             box-sizing: border-box;
             font-family: inherit;
             font-size: 14px;
-            transition: border 0.2s;
+            transition: all 0.2s;
             resize: vertical;
             min-height: 60px;
+            background-color: #fdfefe;
         }
 
         .control-group input:focus, .control-group textarea:focus {
-            border-color: #54a0ff;
+            border-color: #ff8897;
+            box-shadow: 0 0 0 3px rgba(255, 136, 151, 0.15);
             outline: none;
         }
 
@@ -122,7 +124,7 @@
             width: 16px;
             height: 16px;
             cursor: pointer;
-            accent-color: #FF8897;
+            accent-color: #ff8897;
         }
 
         /* Profile Upload Zone */
@@ -136,12 +138,12 @@
         .mini-preview {
             width: 45px;
             height: 45px;
-            border-radius: 8px;
+            border-radius: 10px;
             background-color: #dfe6e9;
             background-image: url('https://via.placeholder.com/50');
             background-size: cover;
             background-position: center;
-            border: none;
+            border: 2px solid #f1f2f6;
             flex-shrink: 0;
         }
 
@@ -154,9 +156,9 @@
         /* 동적 댓글/답글 입력창 스타일 */
         .comment-input-card {
             background-color: #f8f9fa;
-            border: 1px solid #dcdde1;
-            border-radius: 8px;
-            padding: 12px;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            padding: 14px;
             margin-bottom: 12px;
             position: relative;
         }
@@ -171,52 +173,75 @@
         .comment-input-header span {
             font-weight: bold;
             font-size: 13px;
-            color: #2f3640;
+            color: #4b6584;
         }
 
         .reply-input-card {
             background-color: #ffffff;
-            border: 1px dashed #c8d6e5;
-            border-radius: 6px;
-            padding: 10px;
-            margin-top: 8px;
+            border: 1px dashed #dfe4ea;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
             margin-left: 6px; 
             box-sizing: border-box;
         }
 
+        /* 🌸 버튼 감성 리디자인 */
         .btn-small-danger {
-            background-color: #ff6b6b;
+            background-color: #ffa8b6;
             color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 3px 8px;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .btn-small-add {
-            background-color: #9b9c9e;
-            color: #2f3640;
             border: none;
             border-radius: 6px;
             padding: 4px 10px;
-            font-size: 12px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 5px;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-small-danger:hover {
+            background-color: #ff7685;
+        }
+        .btn-small-danger:hover {
+            background-color: #747d8c;
+        }
+        .btn-small-danger:hover {
+            background-color: #d63031;
+        }
+
+        .btn-small-add {
+            background-color: #f1f2f6;
+            color: #57606f;
+            border: 1px solid #dfe4ea;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        .btn-small-add:hover {
+            background-color: #dfe4ea;
+            color: #2f3640;
         }
 
         .btn-add-comment {
-            background-color: #7d7e80;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 12px;
+            background-color: #f1f2f6;
+            color: #57606f;
+            border: 1px dashed #ced6e0;
+            border-radius: 8px;
+            padding: 10px 12px;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
             margin-bottom: 15px;
+            transition: all 0.2s;
+        }
+        .btn-add-comment:hover {
+            background-color: #ffeaa7;
+            border-color: #fdcb6e;
+            color: #d35400;
         }
 
         /* Crop Modal Styles */
@@ -224,7 +249,8 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(47, 54, 64, 0.6);
+            backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -234,20 +260,26 @@
 
         .crop-content {
             background: white;
-            padding: 20px;
-            border-radius: 16px;
+            padding: 25px;
+            border-radius: 20px;
             max-width: 450px;
             width: 100%;
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .crop-content h3 {
+            margin-top: 0;
+            color: #2f3640;
+            font-size: 18px;
         }
 
         .crop-container {
             max-height: 320px;
             margin-bottom: 15px;
             overflow: hidden;
-            background: #eee;
-            border-radius: 10px;
-            border: none;
+            background: #f1f2f6;
+            border-radius: 12px;
         }
 
         .crop-container img {
@@ -256,54 +288,98 @@
 
         .crop-buttons {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .crop-buttons button {
+            flex: 1;
+            padding: 12px;
             border: none !important;
-            border-radius: 6px !important;
+            border-radius: 8px !important;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            color: white;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .crop-buttons button:active {
+            transform: scale(0.98);
         }
 
         .btn-sub {
-            background-color: #718093 !important;
-            box-shadow: 0 4px 6px rgba(113, 128, 147, 0.2) !important;
+            background-color: #a4b0be !important;
+        }
+        .btn-sub:hover {
+            background-color: #747d8c !important;
         }
 
         .btn-reset {
-            background-color: #e67e22 !important;
-            box-shadow: 0 4px 6px rgba(230, 126, 34, 0.2) !important;
+            background-color: #ffa502 !important;
+        }
+        .btn-reset:hover {
+            background-color: #ff7f50 !important;
+        }
+
+        /* 모달 안의 완료 버튼 (기본 버튼 오버라이드) */
+        .crop-buttons button:not(.btn-sub):not(.btn-reset) {
+            background-color: #ff8897 !important;
+        }
+        .crop-buttons button:not(.btn-sub):not(.btn-reset):hover {
+            background-color: #ff6b7d !important;
         }
 
         .btn-danger {
             width: auto !important;
-            padding: 10px 15px !important;
-            background-color: #7d7e80 !important;
+            padding: 10px 16px !important;
+            background-color: #ffa8b6 !important;
             color: #ffffff !important; 
             border: none !important;
-            border-radius: 6px !important;
-            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2) !important;
+            border-radius: 8px !important;
             font-size: 13px !important;
+            font-weight: 600;
             white-space: nowrap;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .btn-danger:hover {
+            background-color: #ff7685 !important;
+        }
+        .btn-danger:active {
+            transform: scale(0.98);
+        }
+        .btn-danger:hover {
+            background-color: #747d8c !important;
+        }
+        .btn-danger:active {
+            transform: scale(0.98);
+        }
+        .btn-danger:hover {
+            background-color: #d63031 !important;
+        }
+        .btn-danger:active {
+            transform: scale(0.98);
         }
 
-        /* 이미지 저장하기 버튼 스타일 */
+        /* 이미지 저장하기 버튼 스타일 (차분하고 세련된 뮤트 그레이/블루 톤) */
         button.btn-main-save {
             width: 100%;
             padding: 14px;
-            background-color: #49494a; 
+            background: linear-gradient(135deg, #ff8897 0%, #ff6b81 100%); 
             color: #ffffff; 
             border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 6px rgba(255, 190, 190, 0.4);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 136, 151, 0.35);
         }
 
         button.btn-main-save:hover {
-            background-color: #ffaAAA; 
+            background: linear-gradient(135deg, #ff7685 0%, #ff526d 100%); 
+            box-shadow: 0 6px 20px rgba(255, 136, 151, 0.5);
+            transform: translateY(-1px);
         }
         button.btn-main-save:active {
             transform: scale(0.99);
@@ -432,6 +508,10 @@
             width: 68px;
             height: 68px; 
             transition: all 0.1s ease;
+            cursor: pointer;
+        }
+        .icon-heart:hover {
+            transform: scale(1.08);
         }
 
         .icon-heart.outline-style {
@@ -564,10 +644,8 @@
     <h1>빛밤 피드 메이커</h1>
     <div class="subtitle">문제될 시 삭제. 출처 표기 안해도 됨. 2차공유는 비계나 1대1로만. 외에는 알잘딱 자유롭게 써주시길...</div>
 
-    <!-- 메인 워크스페이스 -->
     <div class="workspace-container">
         
-        <!-- LEFT SIDE: 컨트롤 패널 -->
         <div class="control-panel">
             <div class="control-group">
                 <label>1. 프로필 사진 업로드 (크롭 가능)</label>
@@ -592,26 +670,23 @@
                 </div>
             </div>
 
-            <!-- 동적 댓글 컨테이너 -->
             <div class="control-group">
                 <label>5. 댓글 및 답글 관리</label>
                 <div id="comments-input-list"></div>
                 <button type="button" class="btn-add-comment" onclick="addCommentInput()">+ 댓글 추가</button>
             </div>
 
-            <!-- 하트 채우기 수동 스위치 옵션 -->
             <div class="control-group">
                 <label>6. 좋아요한 사람</label>
                 <input type="text" id="input-heart-user" placeholder="비울 수 있음" oninput="handleHeartUserInput()">
                 <label class="checkbox-label">
                     <input type="checkbox" id="input-heart-fill-toggle" onchange="updateText()">
-                    좋아요 누르기
+                    좋아요 누르기 (미리보기에서 눌러도 눌립니다)
                 </label>
             </div>
             <button class="btn-main-save" onclick="downloadImage()">이미지 저장하기</button>
         </div>
 
-        <!-- RIGHT SIDE: 미리보기 -->
         <div class="preview-side-zone">
             <div class="preview-title">미리보기</div>
             <div class="preview-container" id="container-frame">
@@ -630,7 +705,7 @@
                     </div>
 
                     <div class="interaction-icons">
-                        <svg class="icon-heart outline-style" id="view-main-heart" viewBox="0 0 24 24">
+                        <svg class="icon-heart outline-style" id="view-main-heart" viewBox="0 0 24 24" onclick="toggleHeart()">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
                         <svg class="icon-comment" viewBox="0 0 24 24" fill="#FF8897">
@@ -644,7 +719,6 @@
                             <span class="comment-user" id="view-heart-user"></span>
                         </div>
 
-                        <!-- 댓글들이 동적으로 출력되는 뷰존 -->
                         <div id="view-comments-list"></div>
                     </div>
 
@@ -656,7 +730,6 @@
 
     </div>
 
-    <!-- Crop Modals -->
     <div class="crop-modal" id="profileCropModal">
         <div class="crop-content">
             <h3>프로필 이미지 자르기 (1:1 고정)</h3>
@@ -691,7 +764,6 @@
         let profileCropper = null;
         let postCropper = null;
 
-        // 댓글 데이터 배열 관리 (targetUser 필드 추가)
         let commentsData = [
             {
                 id: Date.now(),
@@ -722,7 +794,6 @@
         window.addEventListener('resize', updateResponsiveScale);
         window.addEventListener('load', updateResponsiveScale);
 
-        // 프로필 크롭
         function initProfileCropper(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -766,7 +837,6 @@
             document.getElementById('input-profile-img').value = '';
         }
 
-        // 본문 이미지 크롭
         function initPostCropper(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -819,8 +889,6 @@
             document.getElementById('view-post-attached-image-container').style.display = 'none'; 
             setTimeout(updateResponsiveScale, 30); 
         }
-
-        /* --- 동적 댓글 / 답글 데이터 및 UI 제어 엔진 --- */
 
         function renderCommentInputs() {
             const container = document.getElementById('comments-input-list');
@@ -927,12 +995,15 @@
             }
         }
 
-        // 좋아요한 사람 입력 연동
         function handleHeartUserInput() {
             updateText();
         }
 
-        /* --- 실시간 뷰어 업데이트 --- */
+        function toggleHeart() {
+            const checkbox = document.getElementById('input-heart-fill-toggle');
+            checkbox.checked = !checkbox.checked;
+            updateText();
+        }
 
         function updateText() {
             const mainName = document.getElementById('input-name').value;
@@ -947,7 +1018,6 @@
             const mainHeartSvg = document.getElementById('view-main-heart');
             const heartHeader = document.getElementById('view-comment-header');
             
-            // 좋아요한 사람 이름 노출 여부
             if (heartUser.trim() === "") {
                 heartHeader.style.setProperty("display", "none", "important");
                 heartHeader.style.marginBottom = '0px';
@@ -956,19 +1026,16 @@
                 heartHeader.style.marginBottom = '14px'; 
             }
 
-            // 하트 색상 채우기(ON/OFF) 제어
             if (isHeartFill) {
                 mainHeartSvg.className.baseVal = "icon-heart fill-style";
             } else {
                 mainHeartSvg.className.baseVal = "icon-heart outline-style";
             }
 
-            // 동적 댓글 뷰어 렌더링
             const viewCommentsList = document.getElementById('view-comments-list');
             viewCommentsList.innerHTML = '';
 
             commentsData.forEach((comment) => {
-                // 댓글 본문 렌더링
                 if (comment.user || comment.text) {
                     const commentEl = document.createElement('div');
                     commentEl.className = 'comment-item';
@@ -978,15 +1045,12 @@
                     viewCommentsList.appendChild(commentEl);
                 }
 
-                // 해당 댓글의 답글들 렌더링 (보내는 사람과 받는 사람 교대 설정 지원)
                 comment.replies.forEach((reply) => {
                     if (reply.user || reply.targetUser || reply.text) {
                         const replyEl = document.createElement('div');
                         replyEl.className = 'comment-item is-reply';
                         
-                        // 답글 작성자 (입력값 없으면 메인 피드 작성자 이름으로 자동 대체)
                         const replyAuthor = reply.user ? reply.user : mainName;
-                        // 답글 받는 사람 (입력값 없으면 댓글 작성자 이름으로 자동 대체)
                         const replyTarget = reply.targetUser ? reply.targetUser : comment.user;
                         
                         const replyCenter = (replyAuthor && replyTarget) ? '답장' : '';
