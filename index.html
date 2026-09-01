@@ -192,7 +192,7 @@
             outline: none;
         }
 
-        /* 체크박스 커스텀 라벨 스타일 */
+        /* 체크박스 커스텀 라벨 스타일 (체크표시 정중앙 정밀 보정) */
         .checkbox-label {
             display: flex !important;
             align-items: center;
@@ -218,6 +218,8 @@
             display: inline-block;
             position: relative;
             transition: all 0.2s;
+            margin: 0;
+            flex-shrink: 0;
         }
 
         .checkbox-label input[type="checkbox"]:checked {
@@ -228,13 +230,13 @@
         .checkbox-label input[type="checkbox"]:checked::after {
             content: '';
             position: absolute;
-            left: 5px;
-            top: 2px;
+            left: 50%;
+            top: 42%;
             width: 4px;
             height: 8px;
             border: solid white;
             border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
+            transform: translate(-50%, -50%) rotate(45deg);
         }
 
         .section-header-row {
@@ -808,7 +810,7 @@
                 </div>
             </div>
 
-            <!-- 5. 좋아요한 사람 (순서 변경 및 번호 교체) -->
+            <!-- 5. 좋아요한 사람 -->
             <div class="control-group">
                 <label>5. 좋아요한 사람</label>
                 <input type="text" id="input-heart-user" placeholder="비울 수 있음" oninput="handleHeartUserInput()">
