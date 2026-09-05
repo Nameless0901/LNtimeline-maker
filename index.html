@@ -39,6 +39,101 @@
             word-break: keep-all;
         }
 
+        /* 프리셋 박스 스타일 및 아코디언 */
+        .preset-container-box {
+            background: #fff8f9;
+            border: 1px solid #ffccd5;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .preset-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #fff0f3;
+            cursor: pointer;
+            user-select: none;
+        }
+        .preset-header-bar label {
+            font-weight: 700;
+            font-size: 13px;
+            color: #ff6b81;
+            margin-bottom: 0 !important;
+            cursor: pointer;
+        }
+        .preset-toggle-arrow {
+            font-size: 12px;
+            color: #ff6b81;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+        .preset-body {
+            padding: 15px;
+            display: none; 
+            border-top: 1px solid #ffccd5;
+        }
+        .preset-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .preset-row select, .preset-row input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #dfe4ea;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #fff;
+        }
+        .btn-preset {
+            background-color: #ff8897;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .btn-preset:hover {
+            background-color: #ff6b7d;
+        }
+        .btn-preset-sub {
+            background-color: #a4b0be;
+        }
+        .btn-preset-sub:hover {
+            background-color: #747d8c;
+        }
+
+        /* 초기화 버튼 영역 스타일 */
+        .reset-buttons-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn-reset-action {
+            flex: 1;
+            background-color: #f1f2f6;
+            color: #57606f;
+            border: 1px solid #dfe4ea;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .btn-reset-action:hover {
+            background-color: #dfe4ea;
+            color: #2f3640;
+        }
+
         /* 메인 워크스페이스 컨테이너 */
         .workspace-container {
             display: flex;
@@ -192,7 +287,7 @@
             outline: none;
         }
 
-        /* 체크박스 커스텀 라벨 스타일 (체크표시 정중앙 정밀 보정) */
+        /* 체크박스 커스텀 라벨 스타일 */
         .checkbox-label {
             display: flex !important;
             align-items: center;
@@ -507,6 +602,7 @@
             transition: all 0.2s ease;
             box-shadow: 0 4px 15px rgba(255, 136, 151, 0.35);
             font-family: 'Noto Sans KR', sans-serif;
+            margin-top: 15px;
         }
 
         button.btn-main-save:hover {
@@ -557,7 +653,7 @@
         }
 
         #capture-area {
-            width: 1000px; 
+            width: 1000px;
             height: auto; 
             background-color: #FAFAFA;
             padding: 60px 48px 60px 48px;
@@ -787,6 +883,33 @@
         
         <!-- 좌측 설정 패널 -->
         <div class="control-panel">
+            
+            <!-- 인물/작성자 프리셋 관리 섹션 -->
+            <div class="preset-container-box">
+                <div class="preset-header-bar" onclick="togglePresetBox()">
+                    <label>인물 프리셋 관리 (프로필 + 댓글 작성자)</label>
+                    <span class="preset-toggle-arrow" id="preset-arrow">▼</span>
+                </div>
+                <div class="preset-body" id="preset-body">
+                    <div class="preset-row">
+                        <select id="preset-select" onchange="loadPreset()">
+                            <option value="">-- 프리셋 선택 --</option>
+                        </select>
+                        <button class="btn-preset btn-preset-sub" onclick="deletePreset()">삭제</button>
+                    </div>
+                    <div class="preset-row" style="margin-top: 10px;">
+                        <input type="text" id="preset-name-input" placeholder="새 프리셋 이름">
+                        <button class="btn-preset" onclick="savePreset()">저장</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 초기화 버튼 영역 -->
+            <div class="reset-buttons-row">
+                <button class="btn-reset-action" onclick="resetContentAndComments()">내용·답글만 초기화</button>
+                <button class="btn-reset-action" onclick="resetAll()">전체 초기화</button>
+            </div>
+
             <div class="control-group">
                 <label>1. 프로필 사진 업로드 (크롭 가능)</label>
                 <div class="profile-upload-zone">
@@ -796,7 +919,7 @@
             </div>
             <div class="control-group">
                 <label>2. 피드 작성자 이름</label>
-                <input type="text" id="input-name" value="" placeholder="이름을 입력하세요" oninput="updateText()">
+                <input type="text" id="input-name" value="" placeholder="이름을 입력하세요" oninput="onAuthorNameInput()">
             </div>
             <div class="control-group">
                 <label>3. 피드 내용</label>
@@ -926,6 +1049,7 @@
         let profileCropper = null;
         let postCropper = null;
         let isCommentsPopped = false;
+        let currentProfileDataUrl = ''; 
 
         let commentsData = [
             {
@@ -937,6 +1061,226 @@
                 ]
             }
         ];
+
+        /* --- 프리셋 토글 기능 --- */
+        function togglePresetBox() {
+            const body = document.getElementById('preset-body');
+            const arrow = document.getElementById('preset-arrow');
+            if (body.style.display === 'block') {
+                body.style.display = 'none';
+                arrow.innerText = '▼';
+            } else {
+                body.style.display = 'block';
+                arrow.innerText = '▲';
+            }
+        }
+
+        /* --- 프리셋 시스템 --- */
+        const STORAGE_KEY = 'bitbam_feed_presets';
+
+        function getStoredPresets() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (!data) {
+                    // 저장된 프리셋이 아예 없을 경우 자동으로 기본 프리셋 생성
+                    const defaultPresets = {
+                        "기본": {
+                            profileImg: "",
+                            authorName: "",
+                            commentUsers: []
+                        }
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultPresets));
+                    return defaultPresets;
+                }
+                return JSON.parse(data);
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function updatePresetSelectOptions() {
+            const selectEl = document.getElementById('preset-select');
+            const presets = getStoredPresets();
+            selectEl.innerHTML = '<option value="">-- 프리셋 선택 --</option>';
+            for (const name in presets) {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.innerText = name;
+                selectEl.appendChild(opt);
+            }
+        }
+
+        function onAuthorNameInput() {
+            const authorName = document.getElementById('input-name').value;
+            const presetNameInput = document.getElementById('preset-name-input');
+            presetNameInput.value = authorName;
+            updateText();
+        }
+
+        function savePreset() {
+            const presetNameInput = document.getElementById('preset-name-input');
+            const name = presetNameInput.value.trim();
+            if (!name) {
+                alert('프리셋 이름을 입력해주세요.');
+                return;
+            }
+
+            const commentUsersData = commentsData.map(c => ({
+                user: c.user,
+                replies: c.replies.map(r => ({ user: r.user }))
+            }));
+
+            const presets = getStoredPresets();
+            presets[name] = {
+                profileImg: currentProfileDataUrl,
+                authorName: document.getElementById('input-name').value,
+                commentUsers: commentUsersData
+            };
+
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(presets));
+                updatePresetSelectOptions();
+                document.getElementById('preset-select').value = name;
+                alert(`'${name}' 프리셋이 저장되었습니다.`);
+            } catch (e) {
+                if (e.name === 'QuotaExceededError' || e.code === 22) {
+                    alert('저장 공간(LocalStorage)이 가득 찼습니다! 기존에 저장된 불필요한 프리셋을 삭제 후 다시 시도해주세요.');
+                } else {
+                    alert('저장 중 오류가 발생했습니다: ' + e.message);
+                }
+            }
+        }
+
+        function loadPreset() {
+            const selectEl = document.getElementById('preset-select');
+            const name = selectEl.value;
+            if (!name) return;
+
+            const presets = getStoredPresets();
+            const preset = presets[name];
+            if (!preset) return;
+
+            currentProfileDataUrl = preset.profileImg || '';
+            if (currentProfileDataUrl) {
+                const bgVal = `url('${currentProfileDataUrl}')`;
+                document.getElementById('view-profile-img').style.backgroundImage = bgVal;
+                document.getElementById('mini-profile-preview').style.backgroundImage = bgVal;
+            } else {
+                document.getElementById('view-profile-img').style.backgroundImage = '';
+                document.getElementById('mini-profile-preview').style.backgroundImage = '';
+            }
+
+            const loadedName = preset.authorName || '';
+            document.getElementById('input-name').value = loadedName;
+            document.getElementById('preset-name-input').value = loadedName;
+
+            if (preset.commentUsers && preset.commentUsers.length > 0) {
+                commentsData = preset.commentUsers.map(cu => ({
+                    id: Date.now() + Math.random(),
+                    user: cu.user || '',
+                    text: '',
+                    replies: (cu.replies || []).map(ru => ({
+                        id: Date.now() + Math.random(),
+                        user: ru.user || '',
+                        targetUser: '',
+                        text: ''
+                    }))
+                }));
+            } else {
+                commentsData = [
+                    {
+                        id: Date.now(),
+                        user: '',
+                        text: '',
+                        replies: [
+                            { id: Date.now() + 1, user: '', targetUser: '', text: '' }
+                        ]
+                    }
+                ];
+            }
+
+            document.getElementById('input-text').value = '';
+            removePostImage();
+            document.getElementById('input-heart-user').value = '';
+            document.getElementById('input-heart-fill-toggle').checked = false;
+
+            renderCommentInputs();
+            updateText();
+        }
+
+        function deletePreset() {
+            const selectEl = document.getElementById('preset-select');
+            const name = selectEl.value;
+            if (!name) {
+                alert('삭제할 프리셋을 선택해주세요.');
+                return;
+            }
+
+            if (confirm(`'${name}' 프리셋을 삭제하시겠습니까?`)) {
+                const presets = getStoredPresets();
+                delete presets[name];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(presets));
+                updatePresetSelectOptions();
+                document.getElementById('preset-select').value = '';
+            }
+        }
+        /* ------------------------------------- */
+
+        /* --- 초기화 버튼 기능 --- */
+        function resetContentAndComments() {
+            if (!confirm('피드 내용과 댓글/답글 내용을 모두 초기화하시겠습니까? (좋아요 정보와 댓글 작성자명은 유지됩니다)')) return;
+            
+            document.getElementById('input-text').value = '';
+            removePostImage();
+
+            commentsData.forEach(comment => {
+                comment.text = '';
+                if (comment.replies) {
+                    comment.replies.forEach(reply => {
+                        reply.text = '';
+                    });
+                }
+            });
+
+            renderCommentInputs();
+            updateText();
+        }
+
+        function resetAll() {
+            if (!confirm('경고: 프로필, 작성자 이름, 프리셋(로컬 저장소 전체)을 포함한 모든 내용이 완전히 초기화됩니다. 진행하시겠습니까?')) return;
+
+            localStorage.removeItem(STORAGE_KEY);
+            updatePresetSelectOptions();
+
+            currentProfileDataUrl = '';
+            document.getElementById('view-profile-img').style.backgroundImage = '';
+            document.getElementById('mini-profile-preview').style.backgroundImage = '';
+            document.getElementById('input-profile-img').value = '';
+            document.getElementById('input-name').value = '';
+            document.getElementById('preset-name-input').value = '';
+            document.getElementById('preset-select').value = '';
+
+            document.getElementById('input-text').value = '';
+            removePostImage();
+            document.getElementById('input-heart-user').value = '';
+            document.getElementById('input-heart-fill-toggle').checked = false;
+
+            commentsData = [
+                {
+                    id: Date.now(),
+                    user: '',
+                    text: '',
+                    replies: [
+                        { id: Date.now() + 1, user: '', targetUser: '', text: '' }
+                    ]
+                }
+            ];
+
+            renderCommentInputs();
+            updateText();
+        }
+        /* ----------------------- */
 
         function toggleCommentsPanel() {
             isCommentsPopped = !isCommentsPopped;
@@ -1003,8 +1347,9 @@
 
         function cropAndApplyProfile() {
             if (!profileCropper) return;
-            const canvas = profileCropper.getCroppedCanvas({ width: 350, height: 350 });
-            const croppedImgUrl = `url('${canvas.toDataURL('image/png')}')`;
+            const canvas = profileCropper.getCroppedCanvas({ width: 250, height: 250 });
+            currentProfileDataUrl = canvas.toDataURL('image/jpeg', 0.80);
+            const croppedImgUrl = `url('${currentProfileDataUrl}')`;
             document.getElementById('view-profile-img').style.backgroundImage = croppedImgUrl;
             document.getElementById('mini-profile-preview').style.backgroundImage = croppedImgUrl;
             closeProfileModal();
@@ -1095,6 +1440,15 @@
                 `;
 
                 comment.replies.forEach((reply, rIndex) => {
+                    let authorPlaceholder, targetPlaceholder;
+                    if (rIndex % 2 === 1) {
+                        authorPlaceholder = "작성자 이름 (비워두면 댓글 작성자 이름)";
+                        targetPlaceholder = "받는 사람 (비워두면 피드 작성자 이름)";
+                    } else {
+                        authorPlaceholder = "작성자 이름 (비워두면 피드 작성자 이름)";
+                        targetPlaceholder = "받는 사람 (비워두면 댓글 작성자 이름)";
+                    }
+
                     html += `
                         <div class="reply-input-card">
                             <div class="comment-input-header">
@@ -1102,10 +1456,10 @@
                                 <button type="button" class="btn-small-danger" onclick="removeReplyInput(${comment.id}, ${reply.id})">삭제</button>
                             </div>
                             <div class="control-group" style="margin-bottom: 8px;">
-                                <input type="text" placeholder="작성자 이름 (비워두면 기본)" value="${escapeHtml(reply.user)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'user', this.value)">
+                                <input type="text" placeholder="${authorPlaceholder}" value="${escapeHtml(reply.user)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'user', this.value)">
                             </div>
                             <div class="control-group" style="margin-bottom: 8px;">
-                                <input type="text" placeholder="받는 사람 (비워두면 기본)" value="${escapeHtml(reply.targetUser)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'targetUser', this.value)">
+                                <input type="text" placeholder="${targetPlaceholder}" value="${escapeHtml(reply.targetUser)}" oninput="updateReplyData(${comment.id}, ${reply.id}, 'targetUser', this.value)">
                             </div>
                             <div class="control-group" style="margin-bottom: 0;">
                                 <textarea rows="2" placeholder="답글 내용을 입력하세요" oninput="updateReplyData(${comment.id}, ${reply.id}, 'text', this.value)">${escapeHtml(reply.text)}</textarea>
@@ -1236,13 +1590,20 @@
                     viewCommentsList.appendChild(commentEl);
                 }
 
-                comment.replies.forEach((reply) => {
+                comment.replies.forEach((reply, rIndex) => {
                     if (reply.user || reply.targetUser || reply.text) {
                         const replyEl = document.createElement('div');
                         replyEl.className = 'comment-item is-reply';
                         
-                        const replyAuthor = reply.user ? reply.user : mainName;
-                        const replyTarget = reply.targetUser ? reply.targetUser : comment.user;
+                        let replyAuthor, replyTarget;
+
+                        if (rIndex % 2 === 1) {
+                            replyAuthor = reply.user ? reply.user : comment.user;
+                            replyTarget = reply.targetUser ? reply.targetUser : mainName;
+                        } else {
+                            replyAuthor = reply.user ? reply.user : mainName;
+                            replyTarget = reply.targetUser ? reply.targetUser : comment.user;
+                        }
                         
                         const replyCenter = (replyAuthor && replyTarget) ? '답장' : '';
                         const delimiter = (replyAuthor || replyTarget) && reply.text ? ': ' : '';
@@ -1285,6 +1646,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            updatePresetSelectOptions();
             renderCommentInputs();
         });
     </script>
